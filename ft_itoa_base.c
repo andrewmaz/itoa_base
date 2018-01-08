@@ -16,35 +16,32 @@ int		ft_intlen(unsigned int in, int base)
 
 char	*ft_itoa_base(int value, int base)
 {
-	char			*res;
-	int				size;
-	int				tmp;
-	unsigned int	uin;
+	unsigned int uin;
+	int tmp;
+	int size;
+	char *res;
 
-	if (base == 10)
-		res = ft_itoa(value);
-	else
+	size = (base == 10 && value < 0) ? 1 : 0;
+	uin = size > 0 ? -value : (unsigned int)value;
+	size += ft_intlen(uin, base);
+	res = ft_strnew(size);
+	while (size > 0)
 	{
-		uin = (unsigned int)value;
-		size = ft_intlen(uin, base);
-		res = ft_strnew(size);
-		while (size > 0)
-		{
-			tmp = uin%base;
-			if (tmp > 9)
-				res[--size] = uin%base + 55;
-			else
-				res[--size] = uin%base + '0';
-			uin = uin/base;
-		}
+		tmp = uin%base;
+		if (tmp > 9)
+			res[--size] = tmp + 87;
+		else
+			res[--size] = tmp + '0';
+		uin = uin/base;
 	}
+	res[0] = (base == 10 && value < 0) ? '-' : res[0];
 	return (res);
 }
 
 int main (void)
 {
-	printf("!my %o\n", 1234341);
+	printf("printf %x\n", -25);
 
-	printf(" my %s\n", ft_itoa_base(15, 16));
+	printf("    my %s\n", ft_itoa_base(-25, 16));
 	return (0);
 }
